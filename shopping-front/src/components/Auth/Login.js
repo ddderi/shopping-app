@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 export default function Login({loggedIn, loggingUser, message, logout, omniauth}) {
 
-const { register, handleSubmit } = useForm()
+const { register, handleSubmit, reset } = useForm()
 
 
 
@@ -15,6 +15,7 @@ const { register, handleSubmit } = useForm()
       {message ? <h3 className='row-4 error'>{message}</h3> : null }
       <form className='container flex-md-row align-items-center justify-content-center' onSubmit={handleSubmit((data) =>{
        loggingUser(data.email, data.password)
+       reset()
       })}>
       <div className="row-4">
     <label htmlFor='validationCustom01' className="form-label">Email :</label>

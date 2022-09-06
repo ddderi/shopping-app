@@ -7,15 +7,77 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
 import Account from './Account';
+import IndexProducts from './IndexProducts';
+
 
 
 function App() {
 
+const [triggered, setTriggered] = useState(false)
+const [shops, setShops] = useState([])
+const [products, setProducts] = useState([])
 const [message, setMessage] = useState('')
 const [user, setUser] = useState({})
 const [loggedIn, setLoggedIn] = useState(false)
 
 
+
+// function fetchProducts(){
+//   axios.get('http://localhost:3000/shops', {withCredentials: true})
+//   .then(response => {
+//     setShops(response.data.products)
+//     // setProducts(response.data.products)
+//   })
+// }
+
+useEffect(() => {
+  axios.get('http://localhost:3000/shops', {withCredentials: true})
+  .then(response => {
+    if(response.data.products !== shops && triggered === true){
+      setShops(response.data.products)
+      // setProducts(response.data.products)
+      console.log('trigger SHOPS')
+      }
+  })
+ 
+}, [shops])
+
+
+
+// function fetchAdminProducts(){
+//   axios.get('http://localhost:3000/products', {withCredentials: true})
+//   .then(response => {
+//     setProducts(response.data.products)
+//   })
+// }
+
+useEffect(() => {
+  axios.get('http://localhost:3000/products', {withCredentials: true})
+  .then(response => {
+    if (response.data.products !== products && triggered === true){
+    setProducts(response.data.products)
+    
+    console.log('trigger PRODUCT')
+  }else if(response.data.products == products && triggered === false){
+    console.log('ca marche')
+  }
+  })
+}, [products])
+
+function createProduct(name, description, price){
+  axios.post('http://localhost:3000/products', {
+  product: {
+    name: name, 
+    description: description,
+    price: price
+  }
+  }, {withCredentials: true})
+  .then(response => {
+    setProducts([...products, 
+     response.data.product])
+    console.log(response)
+  })
+}
 
 function loggingUser(email, password){
   axios.post("http://localhost:3000/login", {
@@ -136,17 +198,19 @@ function omniauth(){
   .then(response => console.log(response))
 }
 
-
+console.log(shops)
 
   return (
+
     <div className="App">
       <Navbar loggedIn={loggedIn} logout={logout}/>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={ <Home /> } />
+          <Route path="/" element={ <Home shops={shops} /> } />
           <Route path="/login" element={ <Login message={message} loggedIn={loggedIn} loggingUser={loggingUser} logout={logout} omniauth={omniauth}/> } />
           <Route path="/registration" element={ <Registration registrationUser={registrationUser} message={message} /> } />
           <Route path="/account" element={ <Account user={user} editUser={editUser} message={message} /> } />
+          <Route path="/products" element={ <IndexProducts createProduct={createProduct} products={products} setTriggered={setTriggered}/>} />
         </Routes>
       </BrowserRouter>
     </div>

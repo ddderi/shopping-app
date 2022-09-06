@@ -1,13 +1,15 @@
 import React from 'react';
-import Navbar from './Navbar'
+import ProductShops from './ProductShops';
 
-export default function Home() {
+export default function Home({shops}) {
   return (
-    <div>
-
-    product
-
-
-    </div>
+     <div className='container'>
+      <div className="container-fluid cont row ">
+         {shops.map((data, index)=> {return <ProductShops data={data} key={index} />})} 
+      </div>
+    </div> 
   )
 }
+
+
+
