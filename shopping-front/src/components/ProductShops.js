@@ -1,13 +1,14 @@
 import React from 'react';
 
 export default function ProductShops({data}) {
+  console.log(data)
   return (
    
-        <div className="card col-4 cardproduct" >
-          <img className="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUepSBh1189POsTFbg0hbvNhoR_cjByqfL6YpDjMgz&s" alt="Card cap"/>
+        <div className="card" >
+          <img className="card-img-top" src={data.image_url} alt="Card cap"/>
             <div className="card-body">
-            <h5 className="card-title">{data.title}</h5>
-              <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <h5 className="card-title">{data.name}</h5>
+              <p className="card-text">{data.description}</p>
           <button className="btn btn-primary">Go somewhere</button>
           </div>
         </div>

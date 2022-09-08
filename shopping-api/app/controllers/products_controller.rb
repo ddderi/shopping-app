@@ -1,10 +1,28 @@
 class ProductsController < ApplicationController
 
     def index
+        
         products = Product.all
         render json: {
             products: products
         }
+    #     products = Product.all.map{|prod| ProductSerializer.new(prod).serializable_hash[:data][:attributes] }
+        
+    #     render json: {
+    #         products: products
+    # }
+    end
+
+
+    def indexx
+        products = Product.all.map{|prod| ProductSerializer.new(prod).serializable_hash[:data][:attributes] }
+        
+        render json: products
+        # ProductSerializer.new(product).serializable_hash[:data][:attributes]
+        # products = Product.all
+        # render json: {
+        #     products: products
+        # }
     end
 
     def create
@@ -12,9 +30,10 @@ class ProductsController < ApplicationController
         if product.save
             render json: {
                 status: :created,
-                product: product.slice(:id, :name, :description, :price),
+                product: product,
                 message: "Product created"
             }
+            # .slice(:id, :name, :description, :price, :image)
         else 
             render json: {
                 status: 500,
@@ -33,6 +52,6 @@ class ProductsController < ApplicationController
 
     private
     def product_params
-        params.require(:product).permit(:name, :description, :price)
+        params.require(:product).permit(:name, :description, :price, :image)
     end
 end

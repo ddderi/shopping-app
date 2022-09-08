@@ -33,14 +33,15 @@ const [loggedIn, setLoggedIn] = useState(false)
 useEffect(() => {
   axios.get('http://localhost:3000/shops', {withCredentials: true})
   .then(response => {
-    if(response.data.products !== shops && triggered === true){
+    if(response.data.products !== shops && triggered === false){
       setShops(response.data.products)
       // setProducts(response.data.products)
+      setTriggered(true)
       console.log('trigger SHOPS')
       }
   })
  
-}, [shops])
+}, [shops, triggered])
 
 
 
@@ -54,30 +55,37 @@ useEffect(() => {
 useEffect(() => {
   axios.get('http://localhost:3000/products', {withCredentials: true})
   .then(response => {
-    if (response.data.products !== products && triggered === true){
+    if (response.data.products !== products && triggered === false){
     setProducts(response.data.products)
-    
-    console.log('trigger PRODUCT')
-  }else if(response.data.products == products && triggered === false){
+    setTriggered(true)
+    console.log('trigger PRODUCT FIRST TIME ')
+  }else if(response.data.products === products && triggered === true){
     console.log('ca marche')
   }
   })
-}, [products])
+}, [products, triggered])
 
-function createProduct(name, description, price){
+function createProduct(data){
   axios.post('http://localhost:3000/products', {
   product: {
-    name: name, 
-    description: description,
-    price: price
+    name: data, 
+    // description: description,
+    // price: price,
+    // image: data2
   }
   }, {withCredentials: true})
   .then(response => {
-    setProducts([...products, 
-     response.data.product])
-    console.log(response)
+  //   setProducts([...products, 
+  // response.data.product])
+  console.log(data[0])
+ console.log(response)
+    
   })
 }
+
+// setProducts([...products, 
+//   response.data.product])
+//  console.log(response)
 
 function loggingUser(email, password){
   axios.post("http://localhost:3000/login", {
@@ -198,7 +206,7 @@ function omniauth(){
   .then(response => console.log(response))
 }
 
-console.log(shops)
+console.log(products)
 
   return (
 

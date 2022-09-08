@@ -24,7 +24,6 @@ border-radius: 10px 10px;
 }
 
 .login {
-  margin-top: 2%;
 background-color: rgb(158, 224, 255);
 /* width: 40%; */
 padding: 2%;
@@ -35,8 +34,12 @@ border-radius: 10px 10px;
   margin-top: 2%;
 }
 
-.product{
+.productAdmin{
+  
   margin-top: 1%;
+  background-color: rgb(158, 224, 255);
+  padding: 1%;
+border-radius: 10px 10px;
 }
 
 .cont{
@@ -47,3 +50,5 @@ border-radius: 10px 10px;
   margin-left: 0.5%;
   padding: 0;
 }
+
+

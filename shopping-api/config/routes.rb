@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  get 'shops/index'
-  get 'shops/show'
+  get '/index', to: 'products#indexx'
   resources :products
   resources :shops, only: [:index, :show]
   post "/login", to: "sessions#create"
