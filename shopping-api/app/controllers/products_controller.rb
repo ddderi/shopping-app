@@ -1,28 +1,20 @@
 class ProductsController < ApplicationController
 
+    # before_action :admin
+
+
     def index
-        
         products = Product.all
         render json: {
             products: products
         }
-    #     products = Product.all.map{|prod| ProductSerializer.new(prod).serializable_hash[:data][:attributes] }
-        
-    #     render json: {
-    #         products: products
-    # }
     end
-
 
     def indexx
         products = Product.all.map{|prod| ProductSerializer.new(prod).serializable_hash[:data][:attributes] }
         
         render json: products
-        # ProductSerializer.new(product).serializable_hash[:data][:attributes]
-        # products = Product.all
-        # render json: {
-        #     products: products
-        # }
+     
     end
 
     def create
@@ -47,7 +39,17 @@ class ProductsController < ApplicationController
     end
 
     def destroy
-
+        product = Product.find(params[:id])
+        product.destroy
+        if product.destroy
+            render json: {
+                message: 'product deleted'
+            }
+        else 
+            render json: {
+                message: 'problem appears'
+            }
+        end
     end
 
     private

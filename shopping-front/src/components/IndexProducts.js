@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Product from './Product';
 import axios from 'axios';
 
-export default function IndexProducts({ products, createProduct, setTriggered }) {
+export default function IndexProducts({user, setMessage, triggered, setProducts, products, createProduct, setTriggered }) {
 
   const { register, handleSubmit, reset } = useForm()
  const [showform, setShowForm] = useState(false)
@@ -14,72 +14,47 @@ export default function IndexProducts({ products, createProduct, setTriggered })
   setShowButton(!showbutton)
 }
 
-// function send(data1, data2){
-//   const dat = new FormData();
-//           dat.append("product[name]", data1);
-//           dat.append("product[image]", data2);
-//           console.log(dat)
-//           return dat
-// }
+function deleteProduct(id){
+  axios.delete(`http://localhost:3000/products/${id}`, {withCredentials: true})
+  .then(response => {
+    setTriggered(false)
+  })
+}
 
-async function createProduct(data){
-  
- let res = await axios.post('http://localhost:3000/products', data)
-
-  let dd = res.data;
-  console.log(dd)
-
-//   axios.post('http://localhost:3000/products', {
-//   product: {
-//     name: data, 
-//     // description: description,
-//     // price: price,
-//     // image: data2
-//   }
-//   }, {withCredentials: true})
-//   .then(response => {
-//   //   setProducts([...products, 
-//   // response.data.product])
-  
-//  console.log(response)
+useEffect(() => {
+  axios.get('http://localhost:3000/products', {withCredentials: true})
+  .then(response => {
     
-//   })
-}
+    if (response.data.products !== products && triggered === false){
+    setProducts(response.data.products)
+    setTriggered(true)
+    console.log('trigger PRODUCT FIRST TIME ')
+  }else if(response.data.products === products && triggered === true){
+    console.log('ca marche')
+  }
+  }).catch(err => {console.log('error', err)})
+}, [products, triggered])
 
-
-function submitApi(data){
-  fetch('http://localhost:3000/products', {
-    method: "POST",
-    body: data
-  }).then(response => response.json())
-  .then(response => console.log(response))
-  
-  .catch((err) => {console.log(err)})
-}
+console.log(products)
 
   return (
-    
-    
-    // createProduct(data.name, data.description, data.price, data.image)
-    //       setTriggered(true)
-    //       reset()
+   
+    <>
+    {user.manager ?  
     <div className='container cont'>
+       
       <div className="container-fluid d-flex flex-column justify-content-center align-items-center">
+        
         {showform && (
         <form className='col-4 d-flex flex-column login' onSubmit={handleSubmit((data) => {
-          // createProduct(data.name, data.description, data.price, data.image[0])
-          // setTriggered(true)
-          // reset()
-          // console.log(data.image[0])
-          // console.log(data.image)
+         
            const dat = new FormData();
           dat.append("product[name]", data.name);
           dat.append("product[description]", data.description);
           dat.append("product[price]", data.price);
           dat.append("product[image]", data.image[0]);
-          // createProduct(dat)
-          // submitApi(dat)
           createProduct(dat)
+          reset()
         })}>
           <label htmlFor='name'>Product name :</label>
           <input {...register('name')}  />
@@ -93,15 +68,18 @@ function submitApi(data){
           
         </form>
         )}
-          {showbutton && ( <button onClick={() => showForm()}>add new product</button>
+          {showbutton && ( <button className="btn btn-primary" onClick={() => showForm()}>add new product</button>
           )}
         <div className="row">
         
              {products.length > 0 ? products.map((data, index) => 
-            { return <Product data={data} key={index}/>}) : <h3>No products</h3>}
+            { return <Product deleteProduct={deleteProduct} data={data} key={index}/>}) : <h3>No products</h3>}
         </div>
       </div>
     </div>
+    : <div style={{textAlign: 'center'}} className="container">
+      <strong>Not authorized to be here</strong></div>}
+    </>
   )
 }
 

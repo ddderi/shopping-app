@@ -4,7 +4,8 @@ class UsersController < ApplicationController
     def create
         user = User.new(user_params)
         if user.save
-            session[:user_id] = user.id
+            session[:cart] ||= []
+            session[:cart_id] = user.id
             render json: {
                 status: :created,
                 logged_in: true,
@@ -19,12 +20,13 @@ class UsersController < ApplicationController
     end
 
     def update
-        user = User.find(session[:user_id])
+        user = User.find(session[:cart_id])
         if user.authenticate(params[:user][:password])
             if params[:user][:edit_password] == params[:user][:edit_password_confirmation] 
              user.update(password: params[:user][:edit_password], 
-             password_confirmation: params[:user][:edit_password_confirmation]) 
-            
+             password_confirmation: params[:user][:edit_password_confirmation],
+             manager: params[:user][:manager]) 
+                
             render json: {
                 status: :updated,
                 logged_in: true,

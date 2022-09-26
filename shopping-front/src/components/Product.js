@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Product({data}) {
+export default function Product({deleteProduct, data}) {
   console.log(data)
   return (
    
@@ -8,7 +8,7 @@ export default function Product({data}) {
         <span>{data.name}</span> 
         <span>{data.description}</span>
         <span>{data.price}</span>
-       
+       <button onClick={() => {deleteProduct(data.id)}} >remove</button>
         {/* <img  src={data.image_url}  /> */}
        
     </div>

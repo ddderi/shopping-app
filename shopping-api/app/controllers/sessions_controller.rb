@@ -7,7 +7,8 @@ class SessionsController < ApplicationController
       user = User.find_by(email: (params[:user][:email].downcase))
       
       if user.authenticate(params[:user][:password])
-        session[:user_id] = user.id 
+        session[:cart] ||= []
+        session[:cart_id] = user.id 
         render json: {
           status: :created,
           logged_in: true,
