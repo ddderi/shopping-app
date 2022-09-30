@@ -13,7 +13,7 @@ class OrderItemsController < ApplicationController
             # cart2: cart2,
             order_item: orderitem,
             status: :added,
-            message: 'added to the cart'
+            message: 'Added to the cart'
         }
         else
             render json: orderitem.errors
@@ -38,7 +38,7 @@ class OrderItemsController < ApplicationController
         if orderitem.destroy
         render json: {
             status: 'deleted',
-            message: 'Article correctly deleted'
+            message: 'Product deleted'
         }
         else render json: {
             error: orderitem.errors

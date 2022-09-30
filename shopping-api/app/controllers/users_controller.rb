@@ -9,11 +9,12 @@ class UsersController < ApplicationController
             render json: {
                 status: :created,
                 logged_in: true,
-                user: user
+                user: user,
+                message: 'Your account has been succesfully created'
             }
         else 
             render json: { status: 500,
-                        errors: user.errors.full_messages    
+                        errors: user.errors.full_messages,
         }
         end
         
@@ -25,12 +26,12 @@ class UsersController < ApplicationController
             if params[:user][:edit_password] == params[:user][:edit_password_confirmation] 
              user.update(password: params[:user][:edit_password], 
              password_confirmation: params[:user][:edit_password_confirmation],
-             manager: params[:user][:manager]) 
-                
+             manager: params[:user][:manager])    
             render json: {
                 status: :updated,
                 logged_in: true,
-                user: user
+                user: user,
+                message: "Account succesfully updated"
             }
             else
             render json: { status: 500,

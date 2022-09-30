@@ -13,6 +13,7 @@ class OrdersController < ApplicationController
             render json: {
                 order: order,
                 status: 'created',
+                message: 'Order succesfully created, Thank you'
                 
             }
         else 

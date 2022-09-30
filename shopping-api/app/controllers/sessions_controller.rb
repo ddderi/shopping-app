@@ -40,7 +40,11 @@ class SessionsController < ApplicationController
 
     def logout
       reset_session
-      render json: { status: 200, logged_out: true}
+      render json: { 
+              status: 200, 
+              logged_out: true,
+              message: "Succesfully disconnected"
+            }
     end
 
     def omniauth
