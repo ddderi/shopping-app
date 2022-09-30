@@ -1,26 +1,28 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { editOrderitem } from '../requests/ApiRequest';
 
 
-export default function CartProduct({productName, removeFromCart, productDescription, data, editOrderitem}) {
+export default function CartProduct({productName, removeFromCart, data, shops}) {
 
 const { register, handleSubmit} = useForm()
 
-// function productName(id){
-//   if(shops.length>0){
-//   return (shops.find(element => element.id === data.product_id )).name
-//   }else{
-//     return 'Loading...'
-//   }
-// }
 
-// function productDescription(id){
-//   if(shops.length>0){
-//   return (shops.find(element => element.id === data.product_id )).description
-//   }else{
-//     return 'Loading...'
-//   }
-// }
+function productName(id){
+  if(shops.length>0){
+  return (shops.find(element => element.id === id )).name
+  }else{
+    return 'Loading...'
+  }
+}
+
+function productDescription(id){
+  if(shops.length>0){
+  return (shops.find(element => element.id === id )).description
+  }else{
+    return 'Loading...'
+  }
+}
 
   return (
     <div className="containercart">

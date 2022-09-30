@@ -1,41 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Product from './Product';
-import axios from 'axios';
+import { creatProduct, deleteProduct, fetchIndexProducts } from '../requests/ApiRequest';
 
-export default function IndexProducts({user, setMessage, triggered, setProducts, products, createProduct, setTriggered }) {
+export default function IndexProducts({user, triggered, setProducts, products, setTriggered }) {
 
-  const { register, handleSubmit, reset } = useForm()
- const [showform, setShowForm] = useState(false)
- const [showbutton, setShowButton] = useState(true)
+const { register, handleSubmit, reset } = useForm()
+const [showform, setShowForm] = useState(false)
+const [showbutton, setShowButton] = useState(true)
+ 
+
+async function triggerCreate(dat){
+try{
+  const newProd = await creatProduct(dat)
+  setProducts([...products, newProd.product])
+  console.log(newProd.product)
+  return newProd.product
+}catch(error){
+  console.log(error)
+}}
 
  const showForm = () => {
   setShowForm(!showform);
   setShowButton(!showbutton)
 }
 
-function deleteProduct(id){
-  axios.delete(`http://localhost:3000/products/${id}`, {withCredentials: true})
-  .then(response => {
-    setTriggered(false)
-  })
-}
-
 useEffect(() => {
-  axios.get('http://localhost:3000/products', {withCredentials: true})
-  .then(response => {
-    
-    if (response.data.products !== products && triggered === false){
-    setProducts(response.data.products)
-    setTriggered(true)
-    console.log('trigger PRODUCT FIRST TIME ')
-  }else if(response.data.products === products && triggered === true){
-    console.log('ca marche')
-  }
-  }).catch(err => {console.log('error', err)})
+  fetchIndexProducts(products, triggered, setProducts, setTriggered)
 }, [products, triggered])
 
-console.log(products)
+
 
   return (
    
@@ -53,7 +47,7 @@ console.log(products)
           dat.append("product[description]", data.description);
           dat.append("product[price]", data.price);
           dat.append("product[image]", data.image[0]);
-          createProduct(dat)
+          triggerCreate(dat)
           reset()
         })}>
           <label htmlFor='name'>Product name :</label>
@@ -61,7 +55,7 @@ console.log(products)
           <label htmlFor='name'>Description :</label>
           <textarea {...register('description')} />
           <label htmlFor='name'>Price :</label>
-          <input {...register('price')} type='number' step={1} />
+          <input {...register('price')} type='number' min={0} step={1} />
           {/* <label  htmlFor='image'>image</label> */}
           <input  {...register('image')} type='file' id='image' />
           <input className='btn btn-primary btnlogg' type='submit' />
@@ -73,7 +67,7 @@ console.log(products)
         <div className="row">
         
              {products.length > 0 ? products.map((data, index) => 
-            { return <Product deleteProduct={deleteProduct} data={data} key={index}/>}) : <h3>No products</h3>}
+            { return <Product setTriggered={setTriggered} data={data} key={index}/>}) : <h3>No products</h3>}
         </div>
       </div>
     </div>

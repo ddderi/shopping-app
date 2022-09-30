@@ -1,9 +1,23 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-// import Cart from './Cart';
+import { logout } from '../../src/requests/RequestUser';
 
-function ColorSchemesExample({user, loggedIn, logout}) {
+
+function ColorSchemesExample({setLoggedIn, loggedIn, setMessage, user}) {
+
+const loggedUserOut = async () => {
+  try{
+  const loggingOut = await logout()
+  if(loggingOut.status === 200){
+  setLoggedIn(false)
+  setMessage(loggingOut.message)
+  return loggingOut
+   }
+}catch(error){
+  console.log(error)
+}}
+
 
   return (
     <>
@@ -14,7 +28,9 @@ function ColorSchemesExample({user, loggedIn, logout}) {
           <Nav className="me-auto">
             <Nav.Link href="/account">Account</Nav.Link>
             <Nav.Link href="/cart">Your cart</Nav.Link>
-            <Nav.Link onClick={() => logout()} href="#">Log-out</Nav.Link>
+            <Nav.Link onClick={() => {
+              loggedUserOut()
+            }} href="#">Log-out</Nav.Link>
             {user.manager ? <Nav.Link href="/products">Products</Nav.Link> : null}
             {/* <Nav.Link href="#pricing">Pricing</Nav.Link> */}
             </Nav> : 

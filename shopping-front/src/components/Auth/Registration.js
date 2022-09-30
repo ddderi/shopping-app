@@ -1,31 +1,51 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { registrationUser } from '../../requests/RequestUser';
 
-export default function Registration({loggedIn, registrationUser, message}) {
+export default function Registration({setLoggedIn, setUser, setMessage, loggedIn, message}) {
 
 const navigate = useNavigate()
 const { register, handleSubmit } = useForm()
+
+const regNewUser = async (data) => {
+if(data){
+  const newRegUser = await registrationUser(data.email, 
+    data.password, 
+    data.password_confirmation,
+    data.first_name,
+    data.last_name,
+    data.street_address_1,
+    data.street_address_2,
+    data.city,
+    data.state,
+    data.zipcode)
+    setMessage(newRegUser.errors)
+    console.log(newRegUser)
+    if(newRegUser.status !== 500){
+      setUser(newRegUser.user)
+      setLoggedIn(true)
+      
+      setTimeout(() => {
+        navigate("/")
+        setMessage(newRegUser.message)
+      }, 2000)
+      
+    }
+    return newRegUser
+}
+}
+
+
+
+
 
   return (
  
    <div className='container contreg col-6'>
      {message ? message.map((mess, index) => <h3 style={{border: '2px solid black',textAlign: 'center'}} key={index} >{mess}</h3>) : null } 
       <form onSubmit={handleSubmit((data) =>{
-        registrationUser(data.email, 
-          data.password, 
-          data.password_confirmation,
-          data.first_name,
-          data.last_name,
-          data.street_address_1,
-          data.street_address_2,
-          data.city,
-          data.state,
-          data.zipcode)
-          if(loggedIn){
-            setTimeout(() => {navigate("/")}, 2000)
-          }
-          
+        regNewUser(data)
       })} className="row g-3 needs-validation" >
   <div className="col-md-4">
     <label htmlFor='validationCustom01' className="form-label">Email :</label>
