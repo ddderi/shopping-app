@@ -13,11 +13,17 @@ const sendNewUser = async (user) => {
   try{
       if(user){
           const addUser = await loggingUser(user.email, user.password);
+         
+       if(addUser.status === 'created'){
           setLoggedIn(true)
           setMessage(addUser.message)
           setUser(addUser.user)
-          console.log(addUser)
-      return addUser
+          setTimeout(() => {navigate("/")}, 2000)
+          return addUser
+       }else if(addUser.status === 'unconnected'){
+          setMessage(addUser.message)
+          return addUser
+       }
 }}catch(error){
     console.log(error)
   }
@@ -32,7 +38,6 @@ const sendNewUser = async (user) => {
       {message ? <h3 className='row-4 error'>{message}</h3> : null }
       <form className='container flex-md-row align-items-center justify-content-center' onSubmit={handleSubmit((data) =>{
       sendNewUser(data)
-      setTimeout(() => {navigate("/")}, 2000)
       reset()
       })}>
       <div className="row-4">

@@ -38,6 +38,8 @@ useEffect(() => {
     }
   }, [orders, triggered])
 
+console.log(loggedIn)
+
   return (
     <div className='container'>
       <div className="container-fluid flex-column align-items-center justify-content-center col-6" >

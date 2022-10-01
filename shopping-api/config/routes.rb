@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   post '/order_items', to: 'order_items#create', as: 'add_to_cart'
   # post '/cart', to: 'cart#add_to_cart', as: 'add_to_cart'
   delete '/order_items/:id', to: "order_items#destroy", as: 'remove_cart'
-
+  
   get '/index', to: 'products#indexx'
   resources :products
   resources :shops, only: [:index, :show]

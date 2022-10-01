@@ -1,12 +1,11 @@
 class SessionsController < ApplicationController
-    include CurrentUserConcern
+    # include CurrentUserConcern
 
-    
 
     def create
       user = User.find_by(email: (params[:user][:email].downcase))
-      
-      if user.authenticate(params[:user][:password])
+       if user 
+        user.authenticate(params[:user][:password])
         session[:cart] ||= []
         session[:cart_id] = user.id 
         render json: {
@@ -21,7 +20,13 @@ class SessionsController < ApplicationController
                 message: 'Incorrect email or password'
              }
         end
-
+      # else
+      #    render json: {
+      #     message: 'Email not found',
+      #     logged_in: false,
+      #     status: :unconnected,
+      #    }
+      # end
     end
 
     def logged_in

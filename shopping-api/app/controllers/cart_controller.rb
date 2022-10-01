@@ -37,14 +37,4 @@ class CartController < ApplicationController
     
 end
 
-# orderitem = OrderItem.find(params[:id])
-# orderitem.destroy
-# if orderitem.destroy
-# render json: {
-#     status: 'deleted',
-#     message: 'Article correctly deleted'
-# }
-# else render json: {
-#     error: orderitem.errors
-# }
-# end
+
