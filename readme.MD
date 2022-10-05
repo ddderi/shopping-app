@@ -1,4 +1,3 @@
 Shopping cart Application
 
-Application RoR, React, Bootstrap
-TDD
+Application RoR, React, Bootstrap, TDD
