@@ -47,7 +47,6 @@ useEffect(() => {
           <Route path="/account" element={ <Account loggedIn={loggedIn} setMessage={setMessage} setOrders={setOrders} orders={orders} user={user} message={message} setTriggered={setTriggered} triggered={triggered} />  } />
           <Route path="/products" element={ <IndexProducts user={user} setMessage={setMessage} triggered={triggered} setProducts={setProducts} products={products} setTriggered={setTriggered}/> } />
           <Route path="/cart" element={ <Cart shops={shops} loggedIn={loggedIn} setCart={setCart} setMessage={setMessage} triggered={triggered} message={message} user={user} cart={cart} setTriggered={setTriggered} />   } />
-          {/* <Route path="/product/id=" element={ <ProductDetails />} /> */}
         </Routes>
       </BrowserRouter>
     </div>

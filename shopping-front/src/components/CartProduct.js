@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { editOrderitem } from '../requests/ApiRequest';
 
 
-export default function CartProduct({productName, removeFromCart, data, shops}) {
+export default function CartProduct({productName, setTriggered, removeFromCart, data, shops}) {
 
 const { register, handleSubmit} = useForm()
 
@@ -24,6 +24,17 @@ function productDescription(id){
   }
 }
 
+const editQuantityItem = async(quantity, id) => {
+  try{
+    const editItem = await editOrderitem(quantity, id)
+    setTriggered(false)
+    return editItem
+  }catch(error){
+    console.log(error)
+  }
+}
+
+
   return (
     <div className="containercart">
       <div className="leftcart">
@@ -34,14 +45,13 @@ function productDescription(id){
         <span className="cartproduct"><strong>Unit price</strong> : {data.unit_price}</span>
         <span className="cartproduct"><strong>Quantity</strong> : {data.quantity}</span>
         <form>
-        <input {...register('quantity')} type='number' step={1} min={0}  />
+        <input {...register('quantity')} type='number' step={1} min={0} />
         </form>
         <span className="cartproduct"><strong>Total</strong> : ${data.total}</span>
         <div className='btnedit'>
         <button onClick={handleSubmit((props) => {
           console.log(props.quantity)
-          editOrderitem(props.quantity, data.id)
-          console.log(data)
+          editQuantityItem(props.quantity, data.id)
         }) } className='btn btn-secondary btnediteach'>edit</button>
         <button onClick={() => {removeFromCart(data.id)}} className='btn btn-secondary btnediteach'>remove</button>
         </div>

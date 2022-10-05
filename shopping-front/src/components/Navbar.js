@@ -21,7 +21,7 @@ const loggedUserOut = async () => {
 
   return (
     <>
-      <Navbar bg="primary" variant="dark">
+      <Navbar bg="primary menu-navbar" variant="dark">
         <Container>
           <Navbar.Brand href="/">Welcome</Navbar.Brand>
           {loggedIn ? 

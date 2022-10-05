@@ -55,7 +55,7 @@ const checkingOut = async (price) =>{
         <div className=".flex-row">
         <div className='container'>
         {message ? <h3 style={{textAlign: 'center', marginTop: '2%'}} >{message}</h3> : null}
-            {cart.length > 0  ? cart.map((data, index)=> {return <CartProduct shops={shops} key={index} data={data} removeFromCart={removeFromCart} />}) : 
+            {cart.length > 0  ? cart.map((data, index)=> {return <CartProduct setTriggered={setTriggered} shops={shops} key={index} data={data} removeFromCart={removeFromCart} />}) : 
             <div className='d-flex flex-column align-items-center justify-content-flex-end container-fluid col-12' >
 
             <h3  style={{textAlign: 'center', marginTop: '2%'}} >Your cart is empty ...</h3>

@@ -74,13 +74,12 @@ export async function fetchIndexProducts(products, triggered, setProducts, setTr
     }
 }
 
-export async function editOrderitem(quantity, id, setTriggered){
+export async function editOrderitem(quantity, id){
     try{
         const result = axiosInstance.patch(`/order_items/${id}`, {
             order_item: {
                         quantity: quantity,
           }}, {withCredentials:true})
-        setTriggered(false)
         return result.data
     }catch(error){
         console.log(error)
