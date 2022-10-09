@@ -8,9 +8,9 @@ class User < ApplicationRecord
     validates_presence_of :email
 
     def email_correct
-        # if self.email 
-        #     self.email.downcase!
-        # end
+        if self.email 
+            self.email.downcase!
+        end
     end
 
 end

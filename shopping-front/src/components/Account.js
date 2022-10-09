@@ -29,14 +29,14 @@ const changeUserInfo = async (data) => {
 }
 
 useEffect(() => {
-    if(loggedIn && triggered === false){
+    if(loggedIn){
         console.log('trigger')
-        fetchOrders(setOrders, setTriggered)
+        fetchOrders(setOrders)
         setTriggered(true)
     }else if(!loggedIn){
       navigate('/login')
     }
-  }, [orders, triggered])
+  }, [loggedIn, triggered])
 
 console.log(loggedIn)
 

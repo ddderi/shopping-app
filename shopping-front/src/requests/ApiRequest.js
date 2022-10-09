@@ -89,7 +89,7 @@ export async function editOrderitem(quantity, id){
 
 export async function fetchCart(cart, triggered, setTriggered, setCart, setMessage){
     try{
-        const result = await axiosInstance.get('/cart', {withCredentials: true})
+        const result = await axiosInstance.get(`/cart`, {withCredentials: true})
         if(result.data !== cart && triggered === false){
             setCart(result.data)
             setTriggered(true)
