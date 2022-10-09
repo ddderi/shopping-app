@@ -33,7 +33,7 @@ function App() {
     loggedStatus(loggedIn, setLoggedIn, setUser)
   }, [loggedIn])
 
-  
+
   return (
 
     <div className="App">
