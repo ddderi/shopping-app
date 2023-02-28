@@ -8,14 +8,6 @@ const cookieParser = require("cookie-parser");
 
 // const User = require("./app/models/userModel");
 
-var admin = require("firebase-admin");
-
-var serviceAccount = require("../shopping-cart-139ad-firebase-adminsdk-7pzq3-07c40f4d99.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -26,6 +18,30 @@ app.use(
     credentials: true,
   })
 );
+
+var admin = require("firebase-admin");
+
+var serviceAccount = require("../firebase-auth.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+app.post("/signup", async (req, res) => {
+  // const user = {
+  //   email: req.body.email,
+  //   password: req.body.password,
+  //   emailVerified: false,
+  //   disabled: false,
+  // }
+  const userResponse = await admin.auth().createUser({
+    email: req.body.email,
+    password: req.body.password,
+    emailVerified: false,
+    disabled: false,
+  });
+  res.json(userResponse);
+});
 
 const PORT = process.env.PORT || 1234;
 // app.use(router);
