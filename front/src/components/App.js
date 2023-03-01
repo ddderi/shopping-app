@@ -15,10 +15,10 @@ import Account from "./Account";
 import IndexProducts from "./IndexProducts";
 import Cart from "./Cart";
 import { loggedStatus, productShops } from "../requests/ApiRequest";
-import { auth, onAuthStateChanged } from "firebase/compat/app";
 import firebase from "firebase/compat/app";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setUser, setError, logout } from "../redux/authSlice.jsx";
+import { auth, db } from "../config/firebase-config";
 
 function App() {
   const [triggered, setTriggered] = useState(false);
@@ -33,7 +33,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((userAuth) => {
+    auth.onAuthStateChanged((userAuth) => {
       if (userAuth) {
         window.localStorage.setItem("auth", "true");
         dispatch(
